@@ -41,7 +41,7 @@ const SignUpPage = () => {
 
     try {
       // Send a POST request to the NestJS backend
-      const response = await axios.post("http://localhost:3002/auth/signup", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_APIURL}/auth/signup`, {
         email: formData.email,
         password: formData.password,
         firstName: formData.firstName,

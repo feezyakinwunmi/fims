@@ -65,7 +65,7 @@ const AddItemPage = () => {
       };
 
       const response = await axios.post(
-        `http://localhost:3002/${endpoint}`,
+        `${process.env.NEXT_PUBLIC_APIURL}/${endpoint}`,
         payload
       );
 toast.success("Items created successfully");

@@ -332,7 +332,7 @@ const Dashboard = () => {
         const categories = ["crops", "livestock", "tools", "supplies"];
         const categoryData = await Promise.all(
           categories.map(async (category) => {
-            const response = await axios.get(`http://localhost:3002/${category}?userId=${userId}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/${category}?userId=${userId}`);
             return {
               category: category.charAt(0).toUpperCase() + category.slice(1),
               count: response.data.length,
@@ -352,7 +352,7 @@ const Dashboard = () => {
         });
         setInventoryCategories(categoryData);
 
-        const activitiesResponse = await axios.get(`http://localhost:3002/activity?userId=${userId}`);
+        const activitiesResponse = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/activity?userId=${userId}`);
         setRecentActivities(activitiesResponse.data.slice(0, 3));
       } catch (error) {
         console.error("Error fetching dashboard data:", error);

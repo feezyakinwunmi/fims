@@ -66,7 +66,7 @@ const ActivityPage = () => {
   const fetchActivities = async () => {
     try {
       const userId = localStorage.getItem("user"); // Get user ID from localStorage
-      const response = await axios.get(`http://localhost:3002/activity?userId=${userId}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/activity?userId=${userId}`);
       setRecentActivities(response.data);
     } catch (error) {
       console.log("Error fetching activities:", error);
@@ -76,7 +76,7 @@ const ActivityPage = () => {
   const fetchTasks = async () => {
     try {
       const userId = localStorage.getItem("user"); // Get user ID from localStorage
-      const response = await axios.get(`http://localhost:3002/todo?userId=${userId}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/todo?userId=${userId}`);
       setToDoList(response.data);
     } catch (error) {
       console.log("Error fetching tasks:", error);
@@ -87,7 +87,7 @@ const ActivityPage = () => {
     if (!newActivity.trim() || !userId) return;
     
     try {
-      const response = await axios.post("http://localhost:3002/activity", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_APIURL}/activity`, {
         activity: newActivity,
         userId: userId
       });
@@ -101,7 +101,7 @@ const ActivityPage = () => {
   const deleteActivity = async (id: string) => {
     try {
       const userId = localStorage.getItem("user"); // Get userId from localStorage
-      await axios.delete(`http://localhost:3002/activity/${id}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_APIURL}/activity/${id}`, {
         data: { userId }, // Send userId in the request body
       });
       setRecentActivities((prev) => prev.filter((activity) => activity._id !== id));
@@ -114,7 +114,7 @@ const ActivityPage = () => {
     if (!newTask.trim() || !newDueDate || !userId) return;
     
     try {
-      const response = await axios.post("http://localhost:3002/todo", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_APIURL}/todo`, {
         task: newTask,
         dueDate: newDueDate,
         userId: userId
@@ -131,7 +131,7 @@ const ActivityPage = () => {
   const deleteTask = async (id: string) => {
     try {
       const userId = localStorage.getItem("user"); // Get userId from localStorage
-      await axios.delete(`http://localhost:3002/todo/${id}`,{
+      await axios.delete(`${process.env.NEXT_PUBLIC_APIURL}/todo/${id}`,{
         data: { userId }, // Send userId in the request body
 
       });
@@ -159,7 +159,7 @@ const ActivityPage = () => {
       
       // Send request with userId in the body
       const response = await axios.patch(
-        `http://localhost:3002/todo/${id}/status`,
+        `${process.env.NEXT_PUBLIC_APIURL}/todo/${id}/status`,
         { 
           isDone: !currentTask.isDone,
           userId // Include userId in the request body

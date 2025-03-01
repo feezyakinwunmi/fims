@@ -30,7 +30,7 @@ const fetchItemsByCategory = async (category: string) => {
     const userId = localStorage.getItem("user"); // Get user ID from localStorage
     console.log(category)
     const response = await axios.get(
-      `http://localhost:3002/${category}?userId=${userId}`
+      `${process.env.NEXT_PUBLIC_APIURL}/${category}?userId=${userId}`
     );
 
     
