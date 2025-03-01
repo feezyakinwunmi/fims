@@ -371,7 +371,7 @@ const Dashboard = () => {
     } else {
       console.log("User is not authenticated or still loading");
     }
-  }, [user, loading, router]);
+  }, [loading, UserId,router]);
 
   // Chart Data
   const barChartData = {

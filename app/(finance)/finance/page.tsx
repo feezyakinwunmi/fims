@@ -36,12 +36,12 @@ const ComingSoonPage = () => {
     <div className="min-h-screen mt-[130px] flex flex-col items-center justify-center bg-gradient-to-br from-eweko_green_dark to-eweko_green_light text-white">
       {/* Title */}
       <h1 className="text-5xl md:text-7xl font-bold mb-8 text-center">
-        We're Coming Soon!
+        We&apos;re Coming Soon!
       </h1>
 
       {/* Subtitle */}
       <p className="text-lg md:text-2xl text-center max-w-md mb-12">
-        Our website is currently under construction. We'll be launching soon
+        Our website is currently under construction. We&apos;ll be launching soon
         with exciting new features. Stay tuned!
       </p>
 

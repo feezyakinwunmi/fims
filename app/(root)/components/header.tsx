@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from "react";
 import Image from "next/image";
-import { useEffect } from "react";
 import { HeaderIcons } from "@/app/components/headerIcon";
 import { rootNavItems } from "@/constant";
 import Link from "next/link";

@@ -13,11 +13,11 @@ import {
   import Image from 'next/image';
   import Link from 'next/link';
   import { Avatar, AvatarFallback } from '../../components/ui/avatar';
-  import { useEffect, useState } from 'react';
+  import { useState } from 'react';
 
 
 export const HeaderIcons = () => {
-  const [loading, setLoading] = useState<boolean>(true); // Loading state for fetching cart
+  const [loading, ] = useState<boolean>(true); // Loading state for fetching cart
   const handleLogout = () => {
     // Clear userId from localStorage
     localStorage.removeItem("user");

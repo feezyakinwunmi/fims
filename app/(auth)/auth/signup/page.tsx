@@ -21,7 +21,6 @@ interface FormData {
 }
 
 const SignUpPage = () => {
-  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -56,7 +55,7 @@ const SignUpPage = () => {
       // router.push("/auth/otp-selection"); // Redirect to OTP selection page
     } catch (error) {
       // Handle errors
-      if ((error as any).response) {
+      if (axios.isAxiosError(error) && error.response) {
         if (axios.isAxiosError(error)) {
           alert(error.response?.data?.message || "Failed to sign up");
         } else {

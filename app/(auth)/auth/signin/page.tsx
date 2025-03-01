@@ -16,7 +16,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // Add loading state
-  const { login } = useAuthStore(); // Access the login function
 
   const router = useRouter();
 

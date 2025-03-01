@@ -6,7 +6,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { TrashIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useAuth } from "../../../lib/useAuth";
 import { CheckCircle2, Trash2, Circle } from 'lucide-react';
@@ -36,7 +35,6 @@ const ActivityPage = () => {
   const [newTask, setNewTask] = useState("");
   const [newDueDate, setNewDueDate] = useState("");
   const userId = localStorage.getItem("user");
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
         const { user, loading } = useAuth();
 
@@ -61,7 +59,7 @@ const ActivityPage = () => {
       fetchActivities();
       fetchTasks();
     }
-  }, [user]);
+  }, [userId]);
 
   const fetchActivities = async () => {
     try {
@@ -158,7 +156,7 @@ const ActivityPage = () => {
       ));
       
       // Send request with userId in the body
-      const response = await axios.patch(
+       await axios.patch(
         `${process.env.NEXT_PUBLIC_APIURL}/todo/${id}/status`,
         { 
           isDone: !currentTask.isDone,

@@ -10,8 +10,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../../lib/useAuth";
 import axios from "axios";
 import { toast } from "react-toastify";
- import { PlusIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"; // Icons
- import ProtectedRoute from '@/components/ProtectedRoute'
+ import { PlusIcon, } from "@heroicons/react/24/outline"; // Icons
  import bg2 from "@/public/bg2.jpg";
 
 
@@ -21,7 +20,6 @@ const categories = [
   { id: "livestock", name: "Livestock", icon: "🐮" },
   { id: "supplies", name: "Supplies", icon: "📦" },
 ];
-const userId = localStorage.getItem("user");
 
 
 
@@ -101,7 +99,7 @@ const CategoriesPage = () => {
  
     <div className="min-h-screen mt-[130px] flex flex-col items-center justify-center bg-no-repeat bg-contain bg-gray-200 p-4" style={{ backgroundImage: `url(${bg2.src})` }}>
       <h1 className="text-3xl font-bold mb-6">Categories Inventory</h1>
-      <p className="mb-6 text-center text-eweko_green">click on the category below to view the item's in the category</p>
+      <p className="mb-6 text-center text-eweko_green">click on the category below to view the item&apos;s in the category</p>
 
       {/* Display Categories */}
       <div className="grid grid-cols-2 sm2:grid-cols-4 gap-4 mb-8">
