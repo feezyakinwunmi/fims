@@ -1,249 +1,3 @@
-// // pages/index.js (Next.js 12) or app/page.js (Next.js 13+)
-
-// "use client"
-
-// import axios from 'axios'
-// import { Bar, Line } from "react-chartjs-2";
-// import { useAuthStore } from "../../../lib/auth-store";
-// import React, { useEffect } from "react";
-// import { useRouter } from "next/navigation";
-// import { useAuth } from "../../../lib/useAuth";
-// import ProtectedRoute from '@/components/ProtectedRoute'
-
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   BarElement,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from "chart.js";
-
-// ChartJS.register(
-//   CategoryScale,
-//   LinearScale,
-//   BarElement,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend
-// );
-
-// const Dashboard = () => {
-//   const router = useRouter();
-//     const { user, loading } = useAuth();
-  
-
-//     // Authentication check
-//     useEffect(() => {
-//       const token = localStorage.getItem("token");
-//       const storedUserId = localStorage.getItem("user");
-  
-//       if (!loading) {
-//         console.log("Current user ID:", storedUserId);
-        
-//         // Redirect if any auth element is missing
-//         if (!token || !storedUserId) {
-//           router.push("/auth/signin");
-//         }
-//       }
-//     }, [user, loading, router]);
- 
-//   // Demo Data
-//   const keyMetrics = {
-//     totalItems: 500,
-//     lowStock: 12,
-//     totalValue: "$10,000",
-//   };
-
-//   const inventoryCategories = [
-//     { category: "Crops", count: 200 },
-//     { category: "Livestock", count: 150 },
-//     { category: "Equipment", count: 30 },
-//     { category: "Supplies", count: 120 },
-//   ];
-
-//   const recentActivities = [
-//     { action: "Added 50 bags of fertilizer", timestamp: "10 minutes ago" },
-//     { action: "Sold 10 chickens", timestamp: "30 minutes ago" },
-//     { action: "Reordered 20 kg of feed", timestamp: "1 hour ago" },
-//   ];
-
-//   // Chart Data
-//   const barChartData = {
-//     labels: inventoryCategories.map((item) => item.category),
-//     datasets: [
-//       {
-//         label: "Inventory Count",
-//         data: inventoryCategories.map((item) => item.count),
-//         backgroundColor: [
-//           "rgba(75,192,192,0.6)",
-//           "rgba(54,162,235,0.6)",
-//           "rgba(255,206,86,0.6)",
-//           "rgba(201,203,207,0.6)",
-//         ],
-//         borderColor: [
-//           "rgba(75,192,192,1)",
-//           "rgba(54,162,235,1)",
-//           "rgba(255,206,86,1)",
-//           "rgba(201,203,207,1)",
-//         ],
-//         borderWidth: 1,
-//       },
-//     ],
-//   };
-
-//   const lineChartData = {
-//     labels: ["January", "February", "March", "April", "May", "June"],
-//     datasets: [
-//       {
-//         label: "Inventory Trend",
-//         data: [100, 120, 150, 180, 200, 220],
-//         fill: false,
-//         borderColor: "rgb(75, 192, 192)",
-//         tension: 0.1,
-//       },
-//     ],
-//   };
-
-//   return (
-        
-//     <div className="min-h-screen p-4 w-full bg-gray-100 ">
-//       <div className=" bg-white px-16  mx-autoshadow-lg rounded-lg p-6">
-//         <h1 className="text-3xl text-eweko_green_dark font-bold mb-4 "> Welcome</h1>
-
-//         {/* Key Metrics */}
-//         <section className="mb-6">
-//           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//             <div className="p-4 h-[150px] bg-eweko_green/70 shadow rounded-lg border border-gray-200">
-//               <p className="text-3xl font-bold text-eweko_green_dark">Total Items</p>
-//               <p className="text-xl  font-medium text-white">{keyMetrics.totalItems}</p>
-//             </div>
-//             <div className="p-4 h-[150px] bg-eweko_green/70  shadow rounded-lg border border-gray-200">
-//               <p className="text-3xl font-bold  text-eweko_green_dark">Low Stock</p>
-//               <p className="text-xl  font-medium text-white">{keyMetrics.lowStock} items</p>
-//             </div>
-//             <div className="p-4 h-[150px] bg-eweko_green/70  shadow rounded-lg border border-gray-200">
-//               <p className="text-3xl  font-bold text-eweko_green_dark">Total Value</p>
-//               <p className="text-xl font-medium text-white">{keyMetrics.totalValue}</p>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* Inventory Categories */}
-//         <section className="mb-6">
-//           <h2 className="text-2xl font-semibold mb-2">Inventory Categories</h2>
-//           <Bar
-//             data={barChartData}
-//             options={{
-//               responsive: true,
-//               plugins: {
-//                 legend: {
-//                   position: "top",
-//                 },
-//                 title: {
-//                   display: true,
-//                   text: "Stock Levels by Category",
-//                 },
-//               },
-//             }}
-//             className="w-full h-64"
-//           />
-//         </section>
-
-//         {/* Charts */}
-//         <div className=""></div>
-//         <section className="mb-6 bg-eweko_green/70 px-10 pt-5 h-screen">
-//           <h2 className="text-3xl text-white font-semibold mb-2">Inventory Trends</h2>
-//           <Line
-//             data={lineChartData}
-//             options={{
-//               responsive: true,
-//               plugins: {
-//                 legend: {
-//                   position: "top",
-//                 },
-//                 title: {
-//                   display: true,
-//                   text: "Inventory Trend Over Time",
-//                 },
-//               },
-//             }}
-//             className="w-full text-white h-screen"
-//           />
-//         </section>
-
-//         {/* Recent Activities */}
-//         <section>
-//           <h2 className="text-3xl font-semibold mb-2">Recent Activities</h2>
-//           <ul className="space-y-2">
-//             {recentActivities.map((activity, index) => (
-//               <li
-//                 key={index}
-//                 className="flex justify-between bg-white shadow rounded p-4"
-//               >
-//                 <span className="text-gray-800">{activity.action}</span>
-//                 <span className="text-sm text-gray-500">{activity.timestamp}</span>
-//               </li>
-//             ))}
-//           </ul>
-//         </section>
-//       </div>
-//     </div>
-
-    
-//   );
-// };
-
-// export default Dashboard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import axios from 'axios';
@@ -277,7 +31,7 @@ ChartJS.register(
 const Dashboard = () => {
   const router = useRouter();
   const { user, loading } = useAuth();
-  const UserId = localStorage.getItem("user");
+  const [userId, setUserId] = useState<string | null>(null); // Store userId in state
 
   const [keyMetrics, setKeyMetrics] = useState({
     totalItems: 0,
@@ -290,37 +44,37 @@ const Dashboard = () => {
     { category: "Tools", count: 0 },
     { category: "Supplies", count: 0 },
   ]);
+  const [recentActivities, setRecentActivities] = useState<Activity[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   interface Activity {
     activity: string;
     createdAt: string;
   }
 
-  
-  
-  const [recentActivities, setRecentActivities] = useState<Activity[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Fetch userId from localStorage on the client side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("user");
+      setUserId(storedUserId);
+    }
+  }, []);
 
-   useEffect(() => {
+  // Redirect if user is not authenticated
+  useEffect(() => {
+    if (typeof window !== "undefined") {
       const token = localStorage.getItem("token");
       const storedUserId = localStorage.getItem("user");
-  
-      if (!loading) {
-        
-        // Redirect if any auth element is missing
-        if (!token || !storedUserId) {
-          router.push("/auth/signin");
-        }
+
+      if (!loading && (!token || !storedUserId)) {
+        router.push("/auth/signin");
       }
-    }, [user, loading, router]);
-  
+    }
+  }, [user, loading, router]);
+
+  // Fetch dashboard data
   useEffect(() => {
-    console.log("useEffect triggered");
-
     const fetchData = async () => {
-      console.log("fetchData started");
-
-      const userId = localStorage.getItem("user");
-
       if (!userId) {
         console.log("No userId found, redirecting to signin");
         router.push("/auth/signin");
@@ -332,7 +86,9 @@ const Dashboard = () => {
         const categories = ["crops", "livestock", "tools", "supplies"];
         const categoryData = await Promise.all(
           categories.map(async (category) => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/${category}?userId=${userId}`);
+            const response = await axios.get(
+              `${process.env.NEXT_PUBLIC_APIURL}/${category}?userId=${userId}`
+            );
             return {
               category: category.charAt(0).toUpperCase() + category.slice(1),
               count: response.data.length,
@@ -340,10 +96,8 @@ const Dashboard = () => {
           })
         );
 
-
         const totalItems = categoryData.reduce((sum, item) => sum + item.count, 0);
         const lowStock = categoryData.reduce((sum, item) => sum + (item.count < 10 ? 1 : 0), 0);
-
 
         setKeyMetrics({
           totalItems,
@@ -352,7 +106,9 @@ const Dashboard = () => {
         });
         setInventoryCategories(categoryData);
 
-        const activitiesResponse = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/activity?userId=${userId}`);
+        const activitiesResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_APIURL}/activity?userId=${userId}`
+        );
         setRecentActivities(activitiesResponse.data.slice(0, 3));
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -365,14 +121,13 @@ const Dashboard = () => {
       }
     };
 
-    if (loading && UserId) {
+    if (!loading && userId) {
       console.log("User is authenticated, fetching data...");
       fetchData();
     } else {
       console.log("User is not authenticated or still loading");
     }
-  }, [loading, UserId,router]);
-
+  }, [loading, userId, router]);
   // Chart Data
   const barChartData = {
     labels: inventoryCategories.map((item) => item.category),

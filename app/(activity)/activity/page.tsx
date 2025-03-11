@@ -1,7 +1,3 @@
-
-
-
-
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -34,25 +30,30 @@ const ActivityPage = () => {
   const [toDoList, setToDoList] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState("");
   const [newDueDate, setNewDueDate] = useState("");
-  const userId = localStorage.getItem("user");
   const router = useRouter();
-        const { user, loading } = useAuth();
+  const { user, loading } = useAuth();
+  const [userId, setUserId] = useState<string | null>(null); // Store userId in state
 
-    useEffect(() => {
-      
-        const token = localStorage.getItem("token");
+  // Fetch userId from localStorage on the client side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("user");
+      setUserId(storedUserId);
+    }
+  }, []);
 
-        const storedUserId = localStorage.getItem("user");
-    
-        if (!loading) {
-          
-          // Redirect if any auth element is missing
-          if (!token || !storedUserId) {
-            router.push("/auth/signin");
-          }
-        }
-      }, [user, loading, router]);
-    
+  // Redirect if user is not authenticated
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      const storedUserId = localStorage.getItem("user");
+
+      if (!loading && (!token || !storedUserId)) {
+        router.push("/auth/signin");
+      }
+    }
+  }, [user, loading, router]);
+
   // Fetch activities and tasks on mount
   useEffect(() => {
     if (userId) {
@@ -63,7 +64,6 @@ const ActivityPage = () => {
 
   const fetchActivities = async () => {
     try {
-      const userId = localStorage.getItem("user"); // Get user ID from localStorage
       const response = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/activity?userId=${userId}`);
       setRecentActivities(response.data);
     } catch (error) {
@@ -73,7 +73,6 @@ const ActivityPage = () => {
 
   const fetchTasks = async () => {
     try {
-      const userId = localStorage.getItem("user"); // Get user ID from localStorage
       const response = await axios.get(`${process.env.NEXT_PUBLIC_APIURL}/todo?userId=${userId}`);
       setToDoList(response.data);
     } catch (error) {
@@ -83,24 +82,24 @@ const ActivityPage = () => {
 
   const addRecentActivity = async () => {
     if (!newActivity.trim() || !userId) return;
-    
+
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_APIURL}/activity`, {
         activity: newActivity,
-        userId: userId
+        userId: userId,
       });
-      
+
       setRecentActivities([...recentActivities, response.data.data]);
       setNewActivity("");
     } catch (error) {
       console.log("Error adding activity:", error);
     }
   };
+
   const deleteActivity = async (id: string) => {
     try {
-      const userId = localStorage.getItem("user"); // Get userId from localStorage
       await axios.delete(`${process.env.NEXT_PUBLIC_APIURL}/activity/${id}`, {
-        data: { userId }, // Send userId in the request body
+        data: { userId },
       });
       setRecentActivities((prev) => prev.filter((activity) => activity._id !== id));
     } catch (error) {
@@ -110,14 +109,14 @@ const ActivityPage = () => {
 
   const addToDo = async () => {
     if (!newTask.trim() || !newDueDate || !userId) return;
-    
+
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_APIURL}/todo`, {
         task: newTask,
         dueDate: newDueDate,
-        userId: userId
+        userId: userId,
       });
-      
+
       setToDoList([...toDoList, response.data.data]);
       setNewTask("");
       setNewDueDate("");
@@ -128,10 +127,8 @@ const ActivityPage = () => {
 
   const deleteTask = async (id: string) => {
     try {
-      const userId = localStorage.getItem("user"); // Get userId from localStorage
-      await axios.delete(`${process.env.NEXT_PUBLIC_APIURL}/todo/${id}`,{
-        data: { userId }, // Send userId in the request body
-
+      await axios.delete(`${process.env.NEXT_PUBLIC_APIURL}/todo/${id}`, {
+        data: { userId },
       });
       setToDoList((prev) => prev.filter((task) => task._id !== id));
     } catch (error) {
@@ -141,40 +138,29 @@ const ActivityPage = () => {
 
   const toggleTaskStatus = async (id: string) => {
     try {
-      const userId = localStorage.getItem("user"); // Get userId from localStorage
-      if (!userId) {
-        throw new Error("User ID not found in localStorage");
-      }
-  
-      // Get current state before update
-      const currentTask = toDoList.find(t => t._id === id);
+      const currentTask = toDoList.find((t) => t._id === id);
       if (!currentTask) return;
-  
+
       // Optimistic update
-      setToDoList(prev => prev.map(t => 
-        t._id === id ? { ...t, isDone: !t.isDone } : t
-      ));
-      
-      // Send request with userId in the body
-       await axios.patch(
-        `${process.env.NEXT_PUBLIC_APIURL}/todo/${id}/status`,
-        { 
-          isDone: !currentTask.isDone,
-          userId // Include userId in the request body
-        }
+      setToDoList((prev) =>
+        prev.map((t) => (t._id === id ? { ...t, isDone: !t.isDone } : t))
       );
-      
+
+      await axios.patch(`${process.env.NEXT_PUBLIC_APIURL}/todo/${id}/status`, {
+        isDone: !currentTask.isDone,
+        userId,
+      });
     } catch (error) {
       console.error("Error updating task:", error);
       // Rollback on error
-      setToDoList(prev => prev.map(t => 
-        t._id === id ? { ...t, isDone: !t.isDone } : t
-      ));
+      setToDoList((prev) =>
+        prev.map((t) => (t._id === id ? { ...t, isDone: !t.isDone } : t))
+      );
     }
   };
 
   function cn(...classes: (string | boolean | undefined)[]): string {
-    return classes.filter(Boolean).join(' ');
+    return classes.filter(Boolean).join(" ");
   }
 
   return (
