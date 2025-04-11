@@ -16,6 +16,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useQuery } from '@tanstack/react-query';
+import { toast } from "react-toastify";
 
 ChartJS.register(
   CategoryScale,
@@ -28,10 +30,24 @@ ChartJS.register(
   Legend
 );
 
+
+interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  farmName: string;
+  phone: string;
+  createdAt: string;
+}
 const Dashboard = () => {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [userId, setUserId] = useState<string | null>(null); // Store userId in state
+  const [error, setError] = useState<string | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
+
+
 
   const [keyMetrics, setKeyMetrics] = useState({
     totalItems: 0,
@@ -80,6 +96,8 @@ const Dashboard = () => {
         router.push("/auth/signin");
         return;
       }
+
+
 
       try {
         console.log("Fetching category data...");
@@ -165,6 +183,50 @@ const Dashboard = () => {
     ],
   };
 
+    // console.log(userId, "userId from local");
+    // console.log("Stored User ID:", localStorage.getItem('user'));
+
+    // useEffect(() => {
+    //   const storedUser = localStorage.getItem('user');
+    //   if (storedUser) {
+    //     const parsedUser = JSON.parse(storedUser); // Assuming 'user' is a JSON string
+    //     setUserId(parsedUser._id); // or parsedUser.id depending on your data structure
+    //   }
+    // }, []);
+  
+    // 2. Fetch data when userId changes
+    useEffect(() => {
+      const fetchUserData = async () => {
+        if (!userId) return; // Skip if no userId
+  
+        console.log("Fetching data for userId:", userId);
+        setIsLoading(true);
+        setError(null);
+  
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_APIURL}/auth/${userId}`
+          );
+          setUserData(response.data);
+          console.log("Fetch successful:", response.data);
+        } catch (err) {
+          const errorMessage = (axios.isAxiosError(err) && err.response?.data?.message) || 
+                              (err instanceof Error && err.message) || 
+                              "Failed to fetch user data";
+          setError(errorMessage);
+          console.error("Fetch error:", err);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchUserData();
+    }, [userId]); // ✅ Runs whenever userId changes
+  
+    // Debugging
+    console.log("Current userId:", userId);
+    console.log("User data:", userData);
+  
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
@@ -172,7 +234,15 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen  mt-[130px] p-4 w-full bg-gray-100">
       <div className="bg-white px-4  lg:px-16 mx-auto shadow-lg rounded-lg p-6">
-        <h1 className="text-3xl text-eweko_green_dark font-bold mb-4">Welcome</h1>
+
+      {userData && (
+        <div>  
+           <h1 className="text-2xl text-eweko_green_dark font-bold mb-4 font-serif ">Welcome - <span className="text-2xl font-sans">{userData.firstName}  {userData.lastName}</span> </h1>
+         
+     
+         </div>
+      )}
+      
 
         {/* Key Metrics */}
         <section className="mb-6">
